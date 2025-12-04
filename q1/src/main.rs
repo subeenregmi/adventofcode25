@@ -3,17 +3,14 @@ use std::fs;
 fn main() {
     println!("Hello, world!");
 
-    let file_contents = fs::read_to_string("input.txt").unwrap();
+    let file_contents = fs::read_to_string("src/input.txt").unwrap();
 
     let lines = file_contents.split("\n");
 
     let mut dial_value = 50;
     let mut count = 0;
-    let mut line_count = 0;
 
     for line in lines {
-        line_count += 1;
-
         if line == "" {
             break;
         }
@@ -31,20 +28,17 @@ fn main() {
             Err(e) => panic!("error turning string to i32, {e}"),
         };
 
-        dial_value += direction * amount;
-
-        dial_value %= 100;
-
-        if dial_value == 0 {
-            count += 1;
-            dial_value = 0;
-            continue;
-        }
-
-        if dial_value < 0 {
-            dial_value += 100;
+        for _ in 0..amount {
+            dial_value += direction;
+            dial_value %= 100;
+            if dial_value == 0 {
+                count += 1;
+            }
+            if dial_value < 0 {
+                dial_value += 100;
+            }
         }
     }
 
-    println!("{count} {line_count}")
+    println!("{count}")
 }
